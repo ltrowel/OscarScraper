@@ -1,12 +1,20 @@
+from bs4 import BeautifulSoup
+import requests
+
 #
 # Run the Oscar Scraper
 #
 
 
 # Get the ceremony name give the year
+# TODO: This can probably be in a helper file or something
 def get_ceremony_from_year(year):
+    # TODO: Validation Cases:
+    # - Before 1929
+    # - After current year
+    # - 1930 two ceremonies
+
     # First Oscar's was in 1929, but there were two ceremonies in 1930
-    # TODO: Figure out how to scrape the 2nd and 3rd ceremonies better
     ceremony_number = year - 1928
 
     # Find the ordinal indicator based on the last digits of the number
@@ -34,4 +42,15 @@ year = int(input("What year do you want to scrape? "))
 # Calculate the award ceremony based on the year
 ceremony = get_ceremony_from_year(year)
 
-print ("Finding results for {ceremony}".format(ceremony=ceremony))
+print("Finding results for {ceremony}".format(ceremony=ceremony))
+
+# Scrape wikipedia page
+url = "https://en.wikipedia.org/wiki/{ceremony}".format(ceremony=ceremony).replace(' ', '_')
+
+print(url)
+
+request = requests.get(url)
+content = request.content
+soup = BeautifulSoup(content, 'html.parser')
+
+print(soup)
