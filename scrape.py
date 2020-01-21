@@ -53,4 +53,13 @@ request = requests.get(url)
 content = request.content
 soup = BeautifulSoup(content, 'html.parser')
 
-print(soup)
+award = input("What award do you want to scrape? ")
+
+print("Getting nominees for {award}".format(award=award))
+
+award_html = soup.find('a', text=award)
+
+nominees = award_html.find_parent('td').find_all('i')
+
+for nominee in nominees:
+    print(nominee.text)
