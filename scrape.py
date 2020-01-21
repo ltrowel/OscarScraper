@@ -36,30 +36,44 @@ def get_ceremony_from_year(year):
     )
 
 
+def get_wiki_for_ceremony(ceremony):
+    # Scrape wikipedia page
+    url = "https://en.wikipedia.org/wiki/{ceremony}".format(ceremony=ceremony).replace(' ', '_')
+
+    print(url)
+
+    request = requests.get(url)
+    content = request.content
+    return BeautifulSoup(content, 'html.parser')
+
+
+def get_nominees_for_award(award, html_content):
+    award_html = html_content.find('a', text=award)
+
+    return map(
+        lambda x: x.text,
+        award_html.find_parent('td').find_all('i')
+    )
+
+
+def get_nominees_for_award_by_year(year, award):
+    # Calculate the award ceremony based on the year
+    ceremony = get_ceremony_from_year(year)
+
+    # Get the Wiki Page Content to Parse
+    wiki_content = get_wiki_for_ceremony(ceremony)
+
+    # Get the nominees for the given award
+    return get_nominees_for_award(award, wiki_content)
+
+
 # Take in the year from the user
 year = int(input("What year do you want to scrape? "))
-
-# Calculate the award ceremony based on the year
-ceremony = get_ceremony_from_year(year)
-
-print("Finding results for {ceremony}".format(ceremony=ceremony))
-
-# Scrape wikipedia page
-url = "https://en.wikipedia.org/wiki/{ceremony}".format(ceremony=ceremony).replace(' ', '_')
-
-print(url)
-
-request = requests.get(url)
-content = request.content
-soup = BeautifulSoup(content, 'html.parser')
-
 award = input("What award do you want to scrape? ")
 
-print("Getting nominees for {award}".format(award=award))
+print("Getting nominees for {award} in {year}".format(award=award, year=year))
 
-award_html = soup.find('a', text=award)
-
-nominees = award_html.find_parent('td').find_all('i')
+nominees = get_nominees_for_award_by_year(year, award)
 
 for nominee in nominees:
-    print(nominee.text)
+    print(nominee)
