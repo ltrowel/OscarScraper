@@ -1,5 +1,5 @@
 from DAO import OscarDAO
-
+from Model import Award
 
 class Ceremony:
 
@@ -12,4 +12,4 @@ class Ceremony:
         awards = self.dao.get_awards()
 
         for x in awards:
-            print(x)
+            self.awards.append(Award.Award(self.dao, x[0], x[1], x[2]))

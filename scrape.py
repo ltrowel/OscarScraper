@@ -18,3 +18,6 @@ from Model import Ceremony
 
 ceremony = Ceremony.Ceremony(92)
 ceremony.get_awards()
+
+for award in ceremony.awards:
+    award.get_nominees_for_ceremony(ceremony.ceremony)
