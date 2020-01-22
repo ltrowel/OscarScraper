@@ -33,7 +33,6 @@ def __get_wiki_for_ceremony(ceremony):
 
 def __get_nominees_for_award(award, html_content):
     award_html = html_content.find('a', text=award)
-
     return map(
         lambda x: x.text,
         award_html.find_parent('td').find_all('i')

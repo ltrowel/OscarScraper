@@ -1,4 +1,3 @@
-from OscarScraper import scraper
 from Model import Ceremony
 #
 # Run the Oscar Scraper
