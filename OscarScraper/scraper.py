@@ -2,15 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 
-def __get_ceremony_from_year(year):
-    # TODO: Validation Cases:
-    # - Before 1929
-    # - After current year
-    # - 1930 two ceremonies
-
-    # First Oscar's was in 1929, but there were two ceremonies in 1930
-    ceremony_number = year - 1928
-
+def __get_ceremony_name(ceremony_number):
     # Find the ordinal indicator based on the last digits of the number
     # Anything that is a 'teen' breaks the usual rules of 1st, 2nd, 3rd
     last_digit = ceremony_number % 10
@@ -48,9 +40,9 @@ def __get_nominees_for_award(award, html_content):
     )
 
 
-def get_nominees_for_award_by_year(year, award):
+def get_nominees_for_award_by_ceremony(ceremony_number, award):
     # Calculate the award ceremony based on the year
-    ceremony = __get_ceremony_from_year(year)
+    ceremony = __get_ceremony_name(ceremony_number)
 
     # Get the Wiki Page Content to Parse
     wiki_content = __get_wiki_for_ceremony(ceremony)
